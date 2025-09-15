@@ -33,23 +33,56 @@ namespace MazeCli.Classes
         private int playerCol = 1;
         private int exitRow = 18;
         private int exitCol = 18;
+        bool isWon = false;
         
 
         public void GameSession()
         {
-            PrintMaze();
+            PrintMazeAndInfo();
 
             while (!(playerRow == exitRow && playerCol == exitCol))
             {
                 ConsoleKey key = Console.ReadKey().Key;
                 MovePlayer(key);
-                PrintMaze();
+                PrintMazeAndInfo();
             }
+
+            isWon = true;
+            PrintMazeAndInfo();
+
         }
 
-        public void PrintMaze()
+        public void PrintMazeAndInfo()
         {
             Console.Clear();
+            string[] infoLines;
+            if (!isWon)
+            {
+                infoLines = new string[]
+                {
+                    "",
+                    "Символы:",
+                    "P - Игрок",
+                    "E - Выход",
+                    "█ - Стена",
+                    "Перемещайтесь по лабиринту с помощью стрелочек на клавиатуре",
+                    "",
+                    "Цель: добраться до выхода"
+                };
+            }
+            else
+            {
+                infoLines = new string[]
+                {
+                    "",
+                    "Поздравляю!",
+                    "Вы добрались до выхода!",
+                    "",
+                    "Нажмите любую клавишу для выхода из игры"
+                };
+            }
+            
+
             for (int row = 0; row < rows; row++)
             {
                 for (int col = 0; col < cols; col++)
@@ -59,7 +92,10 @@ namespace MazeCli.Classes
                     else if (maze[row, col] == 1) Console.Write("█");
                     else Console.Write(" ");
                 }
+
+                if (row < infoLines.Length) Console.Write("         " + infoLines[row]);
                 Console.WriteLine();
+
             }
         }
 
