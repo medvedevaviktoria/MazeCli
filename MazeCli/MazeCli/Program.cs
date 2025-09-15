@@ -8,7 +8,7 @@ namespace MazeCli
         static void Main(string[] args)
         {
             MazeGame game = new MazeGame();
-            game.PrintMaze();
+            game.GameSession();
         }
     }
 }

@@ -34,6 +34,19 @@ namespace MazeCli.Classes
         private int exitRow = 18;
         private int exitCol = 18;
         
+
+        public void GameSession()
+        {
+            PrintMaze();
+
+            while (!(playerRow == exitRow && playerCol == exitCol))
+            {
+                ConsoleKey key = Console.ReadKey().Key;
+                MovePlayer(key);
+                PrintMaze();
+            }
+        }
+
         public void PrintMaze()
         {
             Console.Clear();
@@ -50,7 +63,22 @@ namespace MazeCli.Classes
             }
         }
 
+        private void MovePlayer(ConsoleKey key)
+        {
+            int newCol = playerCol, newRow = playerRow;
 
+            switch (key)
+            {
+                case ConsoleKey.UpArrow: newRow--; break;
+                case ConsoleKey.DownArrow: newRow++; break;
+                case ConsoleKey.LeftArrow: newCol--; break;
+                case ConsoleKey.RightArrow: newCol++; break;
+                default: break;
+            }
 
+            if (newRow < 0 || newRow >= rows || newCol < 0 || newCol >= cols || maze[newRow, newCol] == 1) return;
+
+            playerCol = newCol; playerRow = newRow;
+        }
     }
 }
