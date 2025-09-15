@@ -4,9 +4,9 @@ namespace MazeCli.Classes
 {
     public class MazeGame
     {
-        private int rows = 20;
-        private int cols = 20;
-        private int[,] maze = new int[20, 20]
+        private const int ROWS = 20;
+        private const int COLS = 20;
+        private readonly int[,] Maze = new int[20, 20]
         {
             {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
             {1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,1},
@@ -29,18 +29,19 @@ namespace MazeCli.Classes
             {1,0,1,1,1,0,1,0,1,1,1,1,0,1,0,0,0,0,0,1},
             {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
         };
-        private int playerRow = 1;
-        private int playerCol = 1;
-        private int exitRow = 18;
-        private int exitCol = 18;
-        bool isWon = false;
+        private readonly int[] PlayerPosition = [1, 1];
+        private int[] ExitPosition = [18, 18];
+        private bool isWon = false;
         
 
+        /// <summary>
+        /// Метод запуска и процесса игровой сессии
+        /// </summary>
         public void GameSession()
         {
             PrintMazeAndInfo();
 
-            while (!(playerRow == exitRow && playerCol == exitCol))
+            while (!(PlayerPosition[0] == ExitPosition[0] && PlayerPosition[1] == ExitPosition[1]))
             {
                 ConsoleKey key = Console.ReadKey().Key;
                 MovePlayer(key);
@@ -52,14 +53,17 @@ namespace MazeCli.Classes
 
         }
 
+        /// <summary>
+        /// Метод вывода лабиринта и доволнительной информации для игрока
+        /// </summary>
         public void PrintMazeAndInfo()
         {
             Console.Clear();
             string[] infoLines;
             if (!isWon)
             {
-                infoLines = new string[]
-                {
+                infoLines =
+                [
                     "",
                     "Символы:",
                     "P - Игрок",
@@ -68,28 +72,28 @@ namespace MazeCli.Classes
                     "Перемещайтесь по лабиринту с помощью стрелочек на клавиатуре",
                     "",
                     "Цель: добраться до выхода"
-                };
+                ];
             }
             else
             {
-                infoLines = new string[]
-                {
+                infoLines =
+                [
                     "",
                     "Поздравляю!",
                     "Вы добрались до выхода!",
                     "",
                     "Нажмите любую клавишу для выхода из игры"
-                };
+                ];
             }
             
 
-            for (int row = 0; row < rows; row++)
+            for (int row = 0; row < ROWS; row++)
             {
-                for (int col = 0; col < cols; col++)
+                for (int col = 0; col < COLS; col++)
                 {
-                    if (row == playerRow && col == playerCol) Console.Write("P");
-                    else if (row == exitRow && col == exitCol) Console.Write('E');
-                    else if (maze[row, col] == 1) Console.Write("█");
+                    if (row == PlayerPosition[0] && col == PlayerPosition[1]) Console.Write("P");
+                    else if (row == ExitPosition[0] && col == ExitPosition[1]) Console.Write('E');
+                    else if (Maze[row, col] == 1) Console.Write("█");
                     else Console.Write(" ");
                 }
 
@@ -99,9 +103,13 @@ namespace MazeCli.Classes
             }
         }
 
+        /// <summary>
+        /// Метод обработки нажатий клавиш 
+        /// </summary>
+        /// <param name="key"></param>
         private void MovePlayer(ConsoleKey key)
         {
-            int newCol = playerCol, newRow = playerRow;
+            int newRow = PlayerPosition[0], newCol = PlayerPosition[1] ;
 
             switch (key)
             {
@@ -112,9 +120,9 @@ namespace MazeCli.Classes
                 default: break;
             }
 
-            if (newRow < 0 || newRow >= rows || newCol < 0 || newCol >= cols || maze[newRow, newCol] == 1) return;
+            if (newRow < 0 || newRow >= ROWS || newCol < 0 || newCol >= COLS || Maze[newRow, newCol] == 1) return;
 
-            playerCol = newCol; playerRow = newRow;
+            PlayerPosition[0] = newRow; PlayerPosition[1] = newCol; 
         }
     }
 }
